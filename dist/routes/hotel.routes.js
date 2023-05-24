@@ -12,6 +12,7 @@ hotelRoutes.post('/', verifyToken_1.verifyAdmin, hotelController.createHotel);
 hotelRoutes.get('/', hotelController.getHotels);
 hotelRoutes.get('/countByCity', hotelController.countByCity);
 hotelRoutes.get('/countByType', hotelController.countByType);
+hotelRoutes.get('/room/:id', hotelController.getHotelRooms);
 hotelRoutes.get('/:id', hotelController.readHotel);
 hotelRoutes.put('/:id', verifyToken_1.verifyAdmin, hotelController.updateHotel);
 hotelRoutes.delete('/:id', verifyToken_1.verifyAdmin, hotelController.deleteHotel);

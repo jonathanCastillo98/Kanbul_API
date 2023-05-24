@@ -12,11 +12,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const room_model_1 = require("../models/room.model");
 const hotel_model_1 = require("../models/hotel.model");
 const error_1 = require("../utils/error");
+const uuid_1 = require("uuid");
 const roomController = {
     createRoom: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const hotelId = req.params.hotelId;
             const newRoom = yield room_model_1.Room.create(req.body);
+            const newRoomUpdated = newRoom.roomNumbers.map(i => {
+                i.roomId = (0, uuid_1.v4)();
+                i.unavailableDates = [];
+                return i;
+            });
+            yield room_model_1.Room.update({
+                roomNumbers: newRoomUpdated
+            }, {
+                where: {
+                    id: newRoom.id
+                }
+            });
             try {
                 const hotel = yield hotel_model_1.Hotel.findByPk(hotelId);
                 if (!hotel)
@@ -106,6 +119,30 @@ const roomController = {
         catch (error) {
             next(error);
         }
-    })
+    }),
+    updateRoomAvailability: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const { dates } = req.body;
+            const rooms = yield room_model_1.Room.findAll();
+            const roomFound = rooms.find(i => i.roomNumbers.find(j => j.roomId == id));
+            const newRoomUpdated = roomFound === null || roomFound === void 0 ? void 0 : roomFound.roomNumbers.map(i => {
+                if (i.roomId === id)
+                    i.unavailableDates = [...i.unavailableDates, ...dates];
+                return i;
+            });
+            yield room_model_1.Room.update({
+                roomNumbers: newRoomUpdated
+            }, {
+                where: {
+                    id: roomFound === null || roomFound === void 0 ? void 0 : roomFound.id
+                }
+            });
+            return res.status(200).json(roomFound);
+        }
+        catch (error) {
+            next(error);
+        }
+    }),
 };
 exports.default = roomController;

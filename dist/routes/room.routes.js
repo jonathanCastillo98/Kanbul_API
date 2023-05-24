@@ -11,6 +11,7 @@ const { roomController } = controllers_1.default;
 roomRoutes.post('/:hotelId', verifyToken_1.verifyAdmin, roomController.createRoom);
 roomRoutes.get('/:id', roomController.readRoom);
 roomRoutes.get('/', roomController.getRooms);
+roomRoutes.put('/availability/:id', roomController.updateRoomAvailability);
 roomRoutes.put('/:id', verifyToken_1.verifyAdmin, roomController.updateRoom);
 roomRoutes.delete('/:id/:hotelId', verifyToken_1.verifyAdmin, roomController.deleteRoom);
 exports.default = roomRoutes;

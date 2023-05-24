@@ -9,7 +9,8 @@ import {
 
 type RoomNumbersT = {
     number:number,
-    unavailableDates: Date[]
+    unavailableDates: Date[],
+    roomId:string,
 }
 
 export class Room extends Model<InferAttributes<Room>, InferCreationAttributes<Room>> {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import controllers from '../controllers';
 import { verifyAdmin, verifyUser } from '../utils/verifyToken';
+import cookieParser from 'cookie-parser';
 
 const userRoutes = Router();
 const { userController } = controllers;
