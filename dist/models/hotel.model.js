@@ -52,7 +52,7 @@ Hotel.init({
         defaultValue: []
     },
     cheapestPrice: {
-        type: sequelize_1.DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.FLOAT,
         allowNull: false,
     },
     featured: {

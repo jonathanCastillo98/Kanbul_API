@@ -23,9 +23,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const hotel_model_1 = require("../models/hotel.model");
 const error_1 = require("../utils/error");
 const sequelize_1 = require("sequelize");
+const room_model_1 = require("../models/room.model");
 const hotelController = {
     createHotel: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log(req.body);
             const hotel = yield hotel_model_1.Hotel.create(req.body);
             res.status(200).json(hotel);
         }
@@ -74,12 +76,20 @@ const hotelController = {
     getHotels: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const _a = req.query, { min, max, limit } = _a, others = __rest(_a, ["min", "max", "limit"]);
-            const hotels = yield hotel_model_1.Hotel.findAll({
-                where: Object.assign(Object.assign({}, others), { cheapestPrice: {
-                        [sequelize_1.Op.between]: [Number(min) || 1, Number(max) || 41]
-                    } }),
-                limit: Number(req.query.limit) || 10
-            });
+            let hotels;
+            if (Object.entries(req.query).length === 0) {
+                hotels = yield hotel_model_1.Hotel.findAll({
+                    limit: Number(req.query.limit) || 10
+                });
+            }
+            else {
+                hotels = yield hotel_model_1.Hotel.findAll({
+                    where: Object.assign(Object.assign({}, others), { cheapestPrice: {
+                            [sequelize_1.Op.between]: [Number(min) || 1, Number(max) || 41]
+                        } }),
+                    limit: Number(req.query.limit) || 10
+                });
+            }
             if (hotels.length === 0)
                 return next((0, error_1.createError)(404, "No searches with this feature!"));
             res.status(200).json(hotels);
@@ -122,6 +132,21 @@ const hotelController = {
                 { type: "villa", count: villaCount.count, hotels: villaCount.rows },
                 { type: "cabin", count: cabinCount.count, hotels: cabinCount.rows },
             ]);
+        }
+        catch (error) {
+            next(error);
+        }
+    }),
+    getHotelRooms: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const hotel = yield hotel_model_1.Hotel.findByPk(id);
+            if (!hotel)
+                return next((0, error_1.createError)(404, "Hotel not found!"));
+            const list = yield Promise.all(hotel.rooms.map((room) => {
+                return room_model_1.Room.findByPk(room);
+            }));
+            return res.status(200).json(list);
         }
         catch (error) {
             next(error);

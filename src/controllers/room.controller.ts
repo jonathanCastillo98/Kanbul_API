@@ -2,12 +2,32 @@ import { NextFunction, Request, Response } from "express";
 import { Room } from "../models/room.model";
 import { Hotel } from "../models/hotel.model";
 import { createError } from "../utils/error";
+import { v4 as uuidv4 } from 'uuid';
+import { Op, Sequelize, col, fn, literal } from "sequelize";
+import { sequelize } from "../database/connection";
+
+
 
 const roomController = {
     createRoom:async (req:Request, res: Response, next: NextFunction) => {
         try {
             const hotelId = req.params.hotelId;
             const newRoom = await Room.create(req.body);
+
+            const newRoomUpdated = newRoom.roomNumbers.map(i => {
+              i.roomId = uuidv4();
+              i.unavailableDates = []
+              return i
+            })
+
+            await Room.update({
+                roomNumbers: newRoomUpdated
+            },{
+                where:{
+                    id: newRoom.id
+                }
+            });
+
 
             try {
                 const hotel = await Hotel.findByPk(hotelId);
@@ -99,7 +119,33 @@ const roomController = {
         } catch (error) {
             next(error)
         }
-    }
+    },
+    updateRoomAvailability:async (req:Request, res: Response, next: NextFunction) => {
+        try {
+            const { id } = req.params;
+            const {dates} = req.body;
+          
+            const rooms = await Room.findAll();
+
+            const roomFound = rooms.find(i => i.roomNumbers.find(j => j.roomId == id));
+            const newRoomUpdated = roomFound?.roomNumbers.map(i => {
+                if(i.roomId === id) i.unavailableDates = [...i.unavailableDates, ...dates];
+                return i
+              })
+  
+              await Room.update({
+                  roomNumbers: newRoomUpdated
+              },{
+                  where:{
+                      id: roomFound?.id
+                  }
+              });
+          
+            return res.status(200).json(roomFound);
+          } catch (error) {
+            next(error);
+          }
+    },
 }
 
 export default roomController;

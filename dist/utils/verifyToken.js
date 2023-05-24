@@ -8,7 +8,21 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const error_1 = require("./error");
 const verifyToken = (req, res, next, cb) => {
     const JWT_SECRET = process.env.JWT_SECRET;
-    const token = req.cookies.access_token;
+    const { authorization } = req.headers;
+    // Check if the authorization header exists
+    if (!authorization) {
+        return res.status(401).send({ error: 'No authorization header' });
+    }
+    //No correct scheme(Bearer)
+    if (!authorization.startsWith("Bearer")) {
+        return res.status(401).send({ error: 'Bearer schema expected' });
+    }
+    //Check if the token is valid
+    const splittedtoken = authorization.split("Bearer ");
+    if (splittedtoken.length !== 2) {
+        return res.status(401).send({ error: 'Invalid token' });
+    }
+    const token = splittedtoken[1];
     if (!token)
         return next((0, error_1.createError)(401, "You are note authenticated!"));
     jsonwebtoken_1.default.verify(token, JWT_SECRET, (err, user) => {

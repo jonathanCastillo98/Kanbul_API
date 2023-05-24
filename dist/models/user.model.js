@@ -22,6 +22,22 @@ User.init({
         allowNull: false,
         unique: true
     },
+    country: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    img: {
+        type: sequelize_1.DataTypes.STRING,
+        defaultValue: "https://cornerstoneia.com/wp-content/uploads/2019/08/avatar-placeholder-1024x1024.jpeg",
+    },
+    city: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
+    phone: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+    },
     password: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
@@ -30,6 +46,10 @@ User.init({
         type: sequelize_1.DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    role: {
+        type: sequelize_1.DataTypes.STRING,
+        defaultValue: "customer"
+    }
 }, {
     tableName: "Users",
     sequelize: connection_1.sequelize,

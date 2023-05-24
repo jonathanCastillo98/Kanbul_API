@@ -78,7 +78,7 @@ Hotel.init(
             defaultValue:[]
         },
         cheapestPrice: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         featured: {

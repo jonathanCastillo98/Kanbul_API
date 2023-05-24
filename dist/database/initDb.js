@@ -18,6 +18,9 @@ const error_1 = require("../utils/error");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_COUNTRY = process.env.ADMIN_COUNTRY;
+const ADMIN_CITY = process.env.ADMIN_CITY;
+const ADMIN_PHONE = process.env.ADMIN_PHONE;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const JWT_SECRET = process.env.JWT_SECRET;
 const createAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -37,8 +40,12 @@ const createAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
             const admin = user_model_1.User.create({
                 username: ADMIN_USERNAME,
                 email: ADMIN_EMAIL,
+                country: ADMIN_COUNTRY,
+                city: ADMIN_CITY,
+                phone: ADMIN_PHONE,
                 password: hash,
-                isAdmin: true
+                isAdmin: true,
+                role: "admin",
             });
             return admin;
         }

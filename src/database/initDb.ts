@@ -4,6 +4,9 @@ import bcrypt from'bcryptjs';
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME as string;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL as string;
+const ADMIN_COUNTRY = process.env.ADMIN_COUNTRY as string;
+const ADMIN_CITY = process.env.ADMIN_CITY as string;
+const ADMIN_PHONE = process.env.ADMIN_PHONE as string;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD as string;
 const JWT_SECRET = process.env.JWT_SECRET as string;        
 
@@ -26,8 +29,12 @@ const  createAdmin = async () => {
             const admin = User.create({ 
                 username: ADMIN_USERNAME,
                 email: ADMIN_EMAIL,
+                country:ADMIN_COUNTRY,
+                city:ADMIN_CITY,
+                phone:ADMIN_PHONE,
                 password: hash,
-                isAdmin: true
+                isAdmin: true,
+                role:"admin",
             })
             return admin;
         }

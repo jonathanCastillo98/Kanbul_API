@@ -31,14 +31,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const authController = {
     register: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { username, email, password } = req.body;
+            const { password } = req.body;
             const salt = bcryptjs_1.default.genSaltSync(10);
             const hash = bcryptjs_1.default.hashSync(password, salt);
-            const newUser = yield user_model_1.User.create({
-                username: username,
-                email: email,
-                password: hash,
-            });
+            const newUser = yield user_model_1.User.create(Object.assign(Object.assign({}, req.body), { password: hash }));
             yield newUser.save();
             res.status(200).json("User has been created.");
         }
@@ -49,6 +45,7 @@ const authController = {
     login: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const user = yield user_model_1.User.findOne({
+                attributes: ["id", "username", "email", "country", "img", "city", "phone", "role", "isAdmin", "password"],
                 where: {
                     username: req.body.username
                 }
@@ -58,11 +55,9 @@ const authController = {
             const isPasswordCorrect = yield bcryptjs_1.default.compare(req.body.password, user.password);
             if (!isPasswordCorrect)
                 return next((0, error_1.createError)(400, "Wrong password or username!"));
-            const token = jsonwebtoken_1.default.sign({ id: user.id, isAdmin: user.isAdmin }, JWT_SECRET);
+            const token = jsonwebtoken_1.default.sign({ id: user.id, isAdmin: user.isAdmin, email: user.email }, JWT_SECRET);
             const _a = user.dataValues, { password, isAdmin } = _a, otherDeatils = __rest(_a, ["password", "isAdmin"]);
-            res.cookie("access_token", token, {
-                httpOnly: true,
-            }).status(200).json(Object.assign({}, otherDeatils));
+            res.status(200).json(Object.assign(Object.assign({}, otherDeatils), { token }));
         }
         catch (error) {
             next(error);

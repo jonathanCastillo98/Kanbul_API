@@ -9,13 +9,12 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 const authController = {
     register:async (req:Request, res: Response, next: NextFunction) => {
         try {
-            const {username, email, password} = req.body;
+            const {password} = req.body;
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(password, salt);
 
             const newUser = await User.create({
-                username:username,
-                email:email,
+                ...req.body,
                 password:hash,
             });
 
@@ -28,6 +27,7 @@ const authController = {
     login:async (req:Request, res: Response, next: NextFunction) => {
         try {
             const user = await User.findOne({
+                attributes:["id","username", "email", "country", "img", "city", "phone", "role", "isAdmin", "password"],
                 where:{
                     username: req.body.username
                 }
@@ -39,13 +39,11 @@ const authController = {
             if(!isPasswordCorrect) return next(createError(400, "Wrong password or username!"))
 
 
-            const token = jwt.sign({id:user.id, isAdmin: user.isAdmin}, JWT_SECRET)
+            const token = jwt.sign({id:user.id, isAdmin: user.isAdmin, email:user.email}, JWT_SECRET)
 
             const {password, isAdmin, ...otherDeatils} = user.dataValues;
-
-            res.cookie("access_token", token,{
-                httpOnly:true,
-            }).status(200).json({...otherDeatils})
+          
+            res.status(200).json({...otherDeatils, token})
         } catch (error) {
             next(error)
         }
