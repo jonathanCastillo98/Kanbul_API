@@ -10,6 +10,7 @@ roomRoutes.get('/:id', roomController.readRoom)
 roomRoutes.get('/', roomController.getRooms)
 roomRoutes.put('/availability/:id', roomController.updateRoomAvailability)
 roomRoutes.put('/:id', verifyAdmin, roomController.updateRoom)
-roomRoutes.delete('/:id/:hotelId', verifyAdmin, roomController.deleteRoom)
+roomRoutes.delete('/:id', verifyAdmin, roomController.deleteRoom)
+roomRoutes.delete('/:id/:hotelId', verifyAdmin, roomController.deleteRoomHotel)
 
 export default roomRoutes;

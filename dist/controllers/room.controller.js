@@ -66,7 +66,7 @@ const roomController = {
             next(error);
         }
     }),
-    deleteRoom: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    deleteRoomHotel: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { id, hotelId } = req.params;
             const room = yield room_model_1.Room.findByPk(id);
@@ -139,6 +139,35 @@ const roomController = {
                 }
             });
             return res.status(200).json(roomFound);
+        }
+        catch (error) {
+            next(error);
+        }
+    }),
+    deleteRoom: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const rooms = yield room_model_1.Room.findAll();
+            const roomFound = rooms.find(i => i.roomNumbers.find(j => j.roomId == id));
+            try {
+                const hotel = yield hotel_model_1.Hotel.findByPk(hotelId);
+                if (!hotel)
+                    return next((0, error_1.createError)(404, "Hotel not found!"));
+                const roomsArr = hotel.rooms;
+                const index = roomsArr.indexOf(room.id);
+                roomsArr.splice(index, 1);
+                yield hotel_model_1.Hotel.update({
+                    rooms: roomsArr
+                }, {
+                    where: {
+                        id: hotelId
+                    }
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+            res.status(200).json("Room deleted successfully!");
         }
         catch (error) {
             next(error);

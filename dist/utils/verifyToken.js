@@ -23,6 +23,7 @@ const verifyToken = (req, res, next, cb) => {
         return res.status(401).send({ error: 'Invalid token' });
     }
     const token = splittedtoken[1];
+    console.log("DESDE TOKEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     if (!token)
         return next((0, error_1.createError)(401, "You are note authenticated!"));
     jsonwebtoken_1.default.verify(token, JWT_SECRET, (err, user) => {
@@ -46,6 +47,7 @@ const verifyUser = (req, res, next) => {
 exports.verifyUser = verifyUser;
 const verifyAdmin = (req, res, next) => {
     (0, exports.verifyToken)(req, res, next, () => {
+        console.log(req, "DESDE ADMIN");
         if (req.user.isAdmin) {
             next();
         }

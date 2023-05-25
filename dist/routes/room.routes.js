@@ -13,5 +13,6 @@ roomRoutes.get('/:id', roomController.readRoom);
 roomRoutes.get('/', roomController.getRooms);
 roomRoutes.put('/availability/:id', roomController.updateRoomAvailability);
 roomRoutes.put('/:id', verifyToken_1.verifyAdmin, roomController.updateRoom);
-roomRoutes.delete('/:id/:hotelId', verifyToken_1.verifyAdmin, roomController.deleteRoom);
+roomRoutes.delete('/:id', verifyToken_1.verifyAdmin, roomController.deleteRoom);
+roomRoutes.delete('/:id/:hotelId', verifyToken_1.verifyAdmin, roomController.deleteRoomHotel);
 exports.default = roomRoutes;

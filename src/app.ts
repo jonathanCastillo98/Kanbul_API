@@ -3,11 +3,11 @@ import router from './routes';
 const cors = require("cors");
 import cookieParser from 'cookie-parser';
 
-const corsOptions ={
-    origin:'http://localhost:5173', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200,
- }
+const corsOptions = {
+    origin: 'http://127.0.0.1:5173',
+    credentials: true,            //access-control-allow-credentials:true
+    optionSuccessStatus: 200,
+}
 
 const app = express();
 app.use(cookieParser())
