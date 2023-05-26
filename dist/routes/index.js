@@ -14,7 +14,7 @@ router.use('/auth', auth_routes_1.default);
 router.use('/users', user_routes_1.default);
 router.use('/rooms', room_routes_1.default);
 router.use((err, req, res, next) => {
-    const errorStatus = err.status || 500;
+    const errorStatus = 500;
     const errorMessage = err.message || "Something went wrong!";
     return res.status(errorStatus).json({
         success: false,

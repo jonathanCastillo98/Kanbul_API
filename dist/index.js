@@ -16,7 +16,7 @@ require("dotenv/config");
 const app_1 = __importDefault(require("./app"));
 const connection_1 = require("./database/connection");
 const initDb_1 = require("./database/initDb");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     (0, connection_1.init)();
     app_1.default.listen(PORT, () => {

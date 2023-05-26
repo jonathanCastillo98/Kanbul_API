@@ -27,7 +27,6 @@ const room_model_1 = require("../models/room.model");
 const hotelController = {
     createHotel: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log(req.body);
             const hotel = yield hotel_model_1.Hotel.create(req.body);
             res.status(200).json(hotel);
         }
