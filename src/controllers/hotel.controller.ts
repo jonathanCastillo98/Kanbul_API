@@ -8,7 +8,6 @@ import { Room } from "../models/room.model";
 const hotelController = {
     createHotel:async (req:Request, res: Response, next: NextFunction) => {
         try {
-            console.log(req.body)
             const hotel = await Hotel.create(req.body)
             res.status(200).json(hotel)
         } catch (error) {

@@ -8,7 +8,7 @@ const routes_1 = __importDefault(require("./routes"));
 const cors = require("cors");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const corsOptions = {
-    origin: 'http://127.0.0.1:5173',
+    origin: 'http://localhost:5173',
     credentials: true,
     optionSuccessStatus: 200,
 };
@@ -17,5 +17,8 @@ app.use((0, cookie_parser_1.default)());
 // Middlewares
 app.use(cors(corsOptions));
 app.use(express_1.default.json());
+app.get('/', (req, res, next) => {
+    res.status(200).json({ success: "YEEEEEEI" });
+});
 app.use('/api/v1/', routes_1.default);
 exports.default = app;
