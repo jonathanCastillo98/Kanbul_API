@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import pg from 'pg';
 
 const DB_NAME = process.env.DB_NAME as string;
 const DB_USER = process.env.DB_USER as string;
