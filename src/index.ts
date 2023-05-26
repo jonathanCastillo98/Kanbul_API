@@ -3,7 +3,7 @@ import app from './app';
 import { init } from './database/connection';
 import { initDb } from './database/initDb';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 
 const main = async () => {
