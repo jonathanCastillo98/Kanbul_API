@@ -4,7 +4,7 @@ const cors = require("cors");
 import cookieParser from 'cookie-parser';
 
 const corsOptions = {
-    origin: 'https://kanbul.vercel.app',
+    origin: 'https://kanbul-api.vercel.app',
     credentials: true,            //access-control-allow-credentials:true
     optionSuccessStatus: 200,
 }
