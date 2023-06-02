@@ -4,7 +4,7 @@ const cors = require("cors");
 import cookieParser from 'cookie-parser';
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://kanbul.vercel.app/',
     credentials: true,            //access-control-allow-credentials:true
     optionSuccessStatus: 200,
 }
