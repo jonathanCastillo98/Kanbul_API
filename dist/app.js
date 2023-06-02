@@ -8,7 +8,7 @@ const routes_1 = __importDefault(require("./routes"));
 const cors = require("cors");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://kanbul.vercel.app',
     credentials: true,
     optionSuccessStatus: 200,
 };
